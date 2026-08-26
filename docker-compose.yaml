@@ -1,0 +1,13 @@
+services:
+  db:
+    image: mariadb:11.4
+    restart: always
+    ports:
+      - "3310:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+    container_name: peliculas
+    volumes:
+      - ./mariadb_data:/var/lib/mysql
+      - ./database:/docker-entrypoint-initdb.d
