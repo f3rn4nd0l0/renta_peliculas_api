@@ -26,6 +26,11 @@ export class Cliente {
   @Column('json')
   roles!: string[];
 
+  @Column('bool', { 
+    name: 'is_active', 
+    default: true })
+  isActive!: boolean;
+
   @BeforeInsert()
   checkFieldsBeforeInsert() {
     if (!this.roles) this.roles = ['user'];

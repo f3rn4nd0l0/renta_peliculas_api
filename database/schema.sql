@@ -11,6 +11,7 @@ CREATE TABLE clientes(
     id INT AUTO_INCREMENT PRIMARY KEY,
     nombre VARCHAR(150) NOT NULL,
     correo VARCHAR(150) NOT NULL UNIQUE,
+    is_active BOOLEAN NOT NULL DEFAULT TRUE,
     password VARCHAR(150) NOT NULL,
     roles JSON NOT NULL DEFAULT ('["user"]')
 
