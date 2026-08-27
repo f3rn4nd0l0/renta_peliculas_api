@@ -8,6 +8,7 @@ import { AuthModule } from './auth/auth.module';
 import { PeliculasModule } from './peliculas/peliculas.module';
 import { RentasModule } from './rentas/rentas.module';
 import { PagosModule } from './pagos/pagos.module';
+import { SeedModule } from './seed/seed.module';
 
 @Module({
   imports: [
@@ -27,6 +28,7 @@ import { PagosModule } from './pagos/pagos.module';
     PeliculasModule,
     RentasModule,
     PagosModule,
+    SeedModule,
 ],
   controllers: [AppController],
   providers: [AppService],
