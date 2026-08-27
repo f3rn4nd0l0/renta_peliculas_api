@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { CommonModule } from './common/common.module';
 import { AuthModule } from './auth/auth.module';
 import { PeliculasModule } from './peliculas/peliculas.module';
+import { RentasModule } from './rentas/rentas.module';
+import { PagosModule } from './pagos/pagos.module';
 
 @Module({
   imports: [
@@ -23,6 +25,8 @@ import { PeliculasModule } from './peliculas/peliculas.module';
     CommonModule,
     AuthModule,
     PeliculasModule,
+    RentasModule,
+    PagosModule,
 ],
   controllers: [AppController],
   providers: [AppService],
