@@ -142,4 +142,22 @@ export class RentasService {
       'Unexpected error, check server logs',
     );
   }
+
+  async procesarVencidas(diasUmbral: number) {
+  await this.dataSource.query(
+    'CALL sp_procesar_rentas_vencidas(?, @procesadas, @omitidas)',
+    [diasUmbral],
+  );
+
+  const [resultado] = await this.dataSource.query(
+    'SELECT @procesadas AS procesadas, @omitidas AS omitidas',
+  );
+
+  return {
+    procesadas: Number(resultado.procesadas),
+    omitidas: Number(resultado.omitidas),
+    mensaje: `Se procesaron ${resultado.procesadas} rentas vencidas (umbral: ${diasUmbral} días), ${resultado.omitidas} omitidas.`,
+  };
+}
+
 }

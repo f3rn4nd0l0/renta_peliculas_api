@@ -14,12 +14,9 @@ proc_body: BEGIN
   DECLARE EXIT HANDLER FOR SQLEXCEPTION
   BEGIN
     GET DIAGNOSTICS CONDITION 1 v_error_msg = MESSAGE_TEXT;
-
     ROLLBACK;
-
     INSERT INTO log_errores (procedimiento, mensaje_error, usuario_bd)
     VALUES ('sp_rentar_pelicula', v_error_msg, USER());
-
     SET p_renta_id = NULL;
     SET p_mensaje = CONCAT('Error al rentar: ', v_error_msg);
   END;
@@ -39,10 +36,11 @@ proc_body: BEGIN
     LEAVE proc_body;
   END IF;
 
-  UPDATE stock_peliculas SET estado = 'rentado' WHERE id = v_stock_id;
 
   INSERT INTO rentas (cliente_id, stock_pelicula_id, fecha_limite)
   VALUES (p_cliente_id, v_stock_id, DATE_ADD(NOW(), INTERVAL p_dias_renta DAY));
+
+  UPDATE stock_peliculas SET estado = 'rentado' WHERE id = v_stock_id;
 
   SET p_renta_id = LAST_INSERT_ID();
   SET p_mensaje = 'Renta registrada correctamente';
@@ -51,6 +49,7 @@ proc_body: BEGIN
 END$$
 
 DELIMITER $$
+
 
 CREATE PROCEDURE sp_devolver_pelicula(
   IN p_renta_id INT,
@@ -95,7 +94,6 @@ proc_body: BEGIN
     LEAVE proc_body;
   END IF;
 
-  -- Reutiliza la función pura ya construida, en vez de duplicar la lógica.
   SET p_mora_calculada = fn_calcular_mora(v_fecha_limite, NOW());
 
   UPDATE rentas

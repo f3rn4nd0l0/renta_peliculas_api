@@ -1,13 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Param,
-  Patch,
-  Query,
-  ParseIntPipe,
-} from '@nestjs/common';
+import {Controller, Get, Post, Body, Param, Patch, Query,ParseIntPipe} from '@nestjs/common';
 import { RentasService } from './rentas.service';
 import { CreateRentaDto } from './dto/create-renta.dto';
 import { PaginationDto } from '../common/dtos/pagination.dtos';
@@ -15,6 +6,7 @@ import { Auth } from '../auth/decorators/auth.decorator';
 import { GetUser } from '../auth/decorators/get-user.decorator';
 import { Cliente } from '../auth/entities/cliente.entity';
 import { ValidRoles } from '../auth/interfaces';
+import { ProcesarVencidasDto } from './dto/procesar-vencidas.dto';
 
 @Controller('rentas')
 export class RentasController {
@@ -52,4 +44,10 @@ export class RentasController {
   devolver(@Param('id', ParseIntPipe) id: number) {
     return this.rentasService.devolver(id);
   }
+
+  @Post('procesar-vencidas')
+  @Auth(ValidRoles.admin)
+  procesarVencidas(@Body() procesarVencidasDto: ProcesarVencidasDto) {
+  return this.rentasService.procesarVencidas(procesarVencidasDto.diasUmbral ?? 0);
+}
 }
